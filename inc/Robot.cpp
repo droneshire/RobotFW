@@ -19,45 +19,53 @@ void Robot::Init(uint8_t nPinForward1, uint8_t nPinBackward1, uint8_t nPinEnable
 }
 
 void Robot::Move(move_cmd_t *cmds){
-	//Motor 1
-	switch(cmds->action1){
-		case FORWARD:
-			m_pM1->Forward(cmds->speed1);
-			break;
-		case REVERSE:
-			m_pM1->Reverse(cmds->speed1);
-			break;
-		case FREE1:
-			m_pM1->Free();
-			break;
-		case BRAKE1:
-		case BRAKE2:
-		default:
-			m_pM1->Brake();
-			break;
-	}
-	
-	//Motor 2
-	switch(cmds->action2){
-		case FORWARD:
-			m_pM2->Forward(cmds->speed2);
-			break;
-		case REVERSE:
-			m_pM2->Reverse(cmds->speed2);
-			break;
-		case FREE1:
-			m_pM2->Free();
-			break;
-		case BRAKE1:
-		case BRAKE2:
-		default:
-			m_pM2->Brake();
-			break;
-	}
+	Decode(cmds->action1, cmds->speed1);
+	Decode(cmds->action2, cmds->speed2);
 }
 
 void Robot::Stop(){
 	m_pM1->Brake();
 	m_pM2->Brake();
+}
+
+void Robot::Decode(uint8_t action, uint8_t speed){
+	
+	switch(CMD_GET(action)){
+		case FORWARD:
+			if(MOTOR_NUM(action) == MOTOR1){
+				m_pM1->Forward(speed);
+			}
+			else if(MOTOR_NUM(action) == MOTOR2) {
+				m_pM2->Forward(speed);
+			}
+			break;
+		case REVERSE:
+			if(MOTOR_NUM(action) == MOTOR1) {
+				m_pM1->Reverse(speed);
+			}
+			else if(MOTOR_NUM(action) == MOTOR2) {
+				m_pM2->Reverse(speed);
+			}
+			break;
+		case FREE1:
+			if(MOTOR_NUM(action) == MOTOR1) {
+				m_pM1->Free();
+			}
+			else if(MOTOR_NUM(action) == MOTOR2) {
+				m_pM2->Free();
+			}
+			break;
+		case BRAKE1:
+		case BRAKE2:
+			if(MOTOR_NUM(action) == MOTOR1) {
+				m_pM1->Brake();
+			}
+			else if(MOTOR_NUM(action) == MOTOR2) {
+				m_pM2->Brake();
+			}
+		default:
+			Stop();
+			break;
+	}
 }
 

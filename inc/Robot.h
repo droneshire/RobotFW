@@ -3,13 +3,18 @@
 
 #include "Motor.h"
 
+#define MOTOR_SET(x) 	(((x) << 4) & 0x30)
+#define CMD_SET(x)		((x) & 0x0F)
+#define MOTOR_NUM(x) 	(((x) >> 4) & 0x03)
+#define CMD_GET(x)		((x) & 0x0F)
+
 enum MOTOR {
-	MOTOR1 = 0x1F, 
-	MOTOR2 = 0x2F
+	MOTOR1 = 0x01, 
+	MOTOR2 = 0x02
 	};
 
 enum CONTROL {
-	FORWARD = (uint8_t) 0x09,
+	FORWARD = 0x09,
 	REVERSE	= 0x06,
 	FREE1 	= 0x00,
 	BRAKE1	= 0x05,
@@ -27,6 +32,7 @@ class Robot {
 private:
 	Motor *m_pM1;
 	Motor *m_pM2;
+	void Decode(uint8_t action, uint8_t speed);
 public:
 	Robot(void);
 	~Robot(void);

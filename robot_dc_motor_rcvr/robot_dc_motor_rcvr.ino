@@ -18,6 +18,7 @@
    8 - UNUSED
 */
 
+// ALL FORWARD* AND BACKWARD* PINS MUST BE PWM PINS!!!
 #define BACK1       2
 #define FORWARD1    3  
 #define ENABLE1     4
