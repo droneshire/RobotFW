@@ -8,6 +8,14 @@
 #define MOTOR_NUM(x) 	(((x) >> 4) & 0x03)
 #define CMD_GET(x)		((x) & 0x0F)
 
+#ifndef uint16_t
+typedef unsigned int uint16_t;
+#endif
+#ifndef uint8_t
+typedef unsigned char uint8_t;
+#endif
+
+
 enum MOTOR {
 	MOTOR1 = 0x01, 
 	MOTOR2 = 0x02
@@ -40,5 +48,8 @@ public:
 				uint8_t nPinForward2, uint8_t nPinBackward2, uint8_t nPinEnable2);
 	void Move(move_cmd_t * cmds);
 	void Stop(void);
+	
+	static void Packet(move_cmd_t * cmd, uint8_t speed_m1, uint8_t speed_m2);
+	static uint16_t Abs(int number);
 };
 #endif
