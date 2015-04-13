@@ -15,6 +15,10 @@ typedef unsigned int uint16_t;
 typedef unsigned char uint8_t;
 #endif
 
+enum MOTOR_TYPE {
+	DC,
+	STEPPER
+};
 
 enum MOTOR {
 	MOTOR1 = 0x01, 
@@ -31,25 +35,27 @@ enum CONTROL {
 	
 typedef struct move_cmd_s {
 		uint8_t action1;
-		uint8_t speed1;
+		long speed1;
 		uint8_t action2;
-		uint8_t speed2;
+		long speed2;
 }move_cmd_t;
 
 class Robot {
 private:
 	Motor *m_pM1;
 	Motor *m_pM2;
-	void Decode(uint8_t action, uint8_t speed);
+    MOTOR_TYPE m_mt;
+	void Decode(uint8_t action, long speed);
 public:
-	Robot(void);
+	Robot();
+	Robot(MOTOR_TYPE mt);
 	~Robot(void);
-	void Init(uint8_t nPinForward1, uint8_t nPinBackward1, uint8_t nPinEnable1, 
+	void Init(void *pMotor1, void *pMotor2, uint8_t nPinForward1, uint8_t nPinBackward1, uint8_t nPinEnable1, 
 				uint8_t nPinForward2, uint8_t nPinBackward2, uint8_t nPinEnable2);
 	void Move(move_cmd_t * cmds);
 	void Stop(void);
 	
-	static void Packet(move_cmd_t * cmd, uint8_t speed_m1, uint8_t speed_m2);
-	static uint16_t Abs(int number);
+	static void Packet(move_cmd_t * cmd, long speed_m1, long speed_m2);
+	static long Abs(long number);
 };
 #endif

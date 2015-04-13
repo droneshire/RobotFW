@@ -30,12 +30,15 @@ const uint64_t pipe = 0xE8E8F0F0E1LL; // Define the transmit pipe
 RF24 radio(CE_PIN, CSN_PIN); // Create a Radio
 move_cmd_t packet;
 int joystick[2];  // 2 element array holding Joystick readings
+int x, y;
 
 void setup()
 {
   Serial.begin(9600);
   radio.begin();
   radio.openWritingPipe(pipe);
+  x = 0;
+  y = 0;
 }
 
 void loop()
@@ -44,6 +47,8 @@ void loop()
 	joystick[1] = analogRead(JOYSTICK_Y);
 	
 	Robot::Packet(&packet, convert_data(joystick[0]), convert_data(joystick[1]));
+	x += convert_data(joystick[0]);
+	y += convert_data(joystick[1]);
 	
 	radio.write( &packet, sizeof(packet));
 	delay(100);

@@ -4,6 +4,7 @@
 #include <RF24_config.h>
 
 #include "Robot.h"
+#include "MotorDC.h"
 
 /*
  - CONNECTIONS: nRF24L01 Modules See:
@@ -33,13 +34,14 @@
 const uint64_t pipe = 0xE8E8F0F0E1LL; // Define the transmit pipe
 
 move_cmd_t cmds;
+MotorDC mdc1, mdc2;
 
-Robot robot;
+Robot robot(DC);
 RF24 radio(CE_PIN, CSN_PIN); // Create a Radio
 
 void setup() {
   Serial.begin(9600);
-  robot.Init(FORWARD1, BACK1, ENABLE1, FORWARD2, BACK2, ENABLE2);
+  robot.Init(&mdc1, &mdc2, FORWARD1, BACK1, ENABLE1, FORWARD2, BACK2, ENABLE2);
   delay(1000);
   Serial.println("Nrf24L01 Receiver STARTING");
   radio.begin();
@@ -51,7 +53,7 @@ void setup() {
 }
 
 void loop() {
-  delay(500);
+  delay(100);
   if ( radio.available() )
   {
     // Read the data payload until we've received everything
