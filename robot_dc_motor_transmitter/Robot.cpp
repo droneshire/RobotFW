@@ -90,24 +90,8 @@ void Robot::Packet(move_cmd_t * cmd, uint8_t speed_m1, uint8_t speed_m2){
 
 uint16_t Robot::Abs(int number) {
 
-	int abs = 0;
-	int bit = 0;
-	bool first_one = false;
-
-	if(number >= 0)
-		return (uint16_t) number;
-		
-	while(bit < sizeof(int) * 8){
-		
-		if(first_one && !(number & 1))
-			abs |= (1 << bit);
-		else if(!first_one && (number & 1))
-			abs |= (1 << bit);
-		if(number & 1)
-			first_one = true;
-		bit++;
-		number >>= 1;
-	}
-
-	return (uint8_t)abs;
+	if(number > 0)
+		return (uint16_t)number;
+	else 
+		return (uint16_t)(number * -1);
 }
