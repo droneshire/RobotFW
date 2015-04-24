@@ -23,16 +23,10 @@ Robot::~Robot(){
 
 void Robot::Init(Motor *pMotor1, Motor *pMotor2, uint8_t m_nPin1_m1, uint8_t m_nPin2_m1, uint8_t nPinEnable1, 
 				uint8_t m_nPin1_m2, uint8_t m_nPin2_m2, uint8_t nPinEnable2) {
-	
-        if(m_mt == DC){
-            m_pM1 = static_cast<MotorDC*>(pMotor1);
-            m_pM2 = static_cast<MotorDC*>(pMotor2);
-        }
-        else if(m_mt == STEPPER){
-            m_pM1 = static_cast<MotorStepper*>(pMotor1);
-            m_pM2 = static_cast<MotorStepper*>(pMotor2);
-        }
         
+	m_pM1 = pMotor1;
+	m_pM2 = pMotor2;
+	
 	m_pM1->Init(m_nPin1_m1, m_nPin2_m1, nPinEnable1);
 	m_pM2->Init(m_nPin1_m2, m_nPin2_m2, nPinEnable2);
 }
