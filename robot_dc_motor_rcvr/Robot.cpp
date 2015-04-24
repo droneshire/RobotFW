@@ -5,6 +5,8 @@
 
 Robot::Robot(){
     m_mt = DC;
+	m_pM1 = null
+	m_pM2 = null;
 }
 
 Robot::Robot(MOTOR_TYPE mt){
@@ -19,7 +21,7 @@ Robot::~Robot(){
 	delete m_pM2;
 }
 
-void Robot::Init(void *pMotor1, void *pMotor2, uint8_t m_nPin1_m1, uint8_t m_nPin2_m1, uint8_t nPinEnable1, 
+void Robot::Init(Motor *pMotor1, Motor *pMotor2, uint8_t m_nPin1_m1, uint8_t m_nPin2_m1, uint8_t nPinEnable1, 
 				uint8_t m_nPin1_m2, uint8_t m_nPin2_m2, uint8_t nPinEnable2) {
 	
         if(m_mt == DC){
